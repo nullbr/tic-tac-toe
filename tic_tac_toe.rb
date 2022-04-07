@@ -20,19 +20,15 @@ class TicTackToe
   def input_to_board(row, column)
     row = row.to_i
     column = column.to_i
-    if row.between?(1, 3) && column.between?(1, 3)
-      row -= 1
-      column -= 1
-      if @game[row][column] == ' '
-        @game[row][column] = if @turn == @player1
-                               'X'
-                             else
-                               'O'
-                             end
-        current_player
-      else
-        puts "\nThis spot is non existent or is taken, go again\n"
-      end
+    if @game[row - 1][column - 1] == ' ' && row.between?(1, 3) && column.between?(1, 3)
+      @game[row - 1][column - 1] = if @turn == @player1
+                                     'X'
+                                   else
+                                     'O'
+                                   end
+      current_player
+    else
+      puts "\nThis spot is non existent or is taken, go again\n"
     end
   end
 
