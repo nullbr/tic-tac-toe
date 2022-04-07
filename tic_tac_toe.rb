@@ -9,6 +9,7 @@ class TicTackToe
   end
 
   def current_player
+    @draw += 1
     @turn = if @turn == @player1
               @player2
             else
@@ -19,18 +20,19 @@ class TicTackToe
   def input_to_board(row, column)
     row = row.to_i
     column = column.to_i
-    if @game[row - 1][column - 1] == ' ' && row.between?(1, 3) && column.between?(1, 3)
+    if row.between?(1, 3) && column.between?(1, 3)
       row -= 1
       column -= 1
-      @draw += 1
-      @game[row][column] = if @turn == @player1
-                             'X'
-                           else
-                             'O'
-                           end
-      current_player
-    else
-      puts "\nThis spot is non existent or is taken, go again\n"
+      if @game[row][column] == ' '
+        @game[row][column] = if @turn == @player1
+                               'X'
+                             else
+                               'O'
+                             end
+        current_player
+      else
+        puts "\nThis spot is non existent or is taken, go again\n"
+      end
     end
   end
 
@@ -53,10 +55,13 @@ class TicTackToe
   end
 
   def game_diagonal
-    if @game[0][0] != ' ' && @game[0][0] == @game[1][1] && @game[1][1] == @game[2][2]
-      @game_type = 'Diagonal'
-    elsif @game[0][2] != ' ' && @game[0][2] == @game[1][1] && @game[1][1] == @game[2][0]
-      @game_type = 'Diagonal'
+    middle = @game[1][1]
+    unless middle == ' '
+      if @game[0][0] == middle && middle == @game[2][2]
+        @game_type = 'Diagonal'
+      elsif @game[0][2] == middle && middle == @game[2][0]
+        @game_type = 'Diagonal'
+      end
     end
   end
 
@@ -71,11 +76,7 @@ class TicTackToe
         break
       end
     end
-    if @game_type.nil?
-      true
-    else
-      false
-    end
+    @game_type.nil? ? true : false
   end
 
   def winner
@@ -96,13 +97,13 @@ class TicTackToe
       puts "Row    #{n + 1} [ #{@game[n][0]} | #{@game[n][1]} | #{@game[n][2]} ]"
       n += 1
     end
-    puts " "
+    puts ' '
   end
 end
 
-puts "Insert player X name: "
+puts 'Insert player X name: '
 player1 = gets.chomp
-puts "Insert player O name: "
+puts 'Insert player O name: '
 player2 = gets.chomp
 game = TicTackToe.new(player1, player2)
 game.display_the_board
