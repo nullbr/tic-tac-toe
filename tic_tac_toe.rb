@@ -1,5 +1,3 @@
-require 'pry'
-
 class TicTackToe
   def initialize(player1, player2)
     @player1 = player1
@@ -92,10 +90,10 @@ class TicTackToe
   end
 
   def display_the_board
-    puts "\nColumn   1 | 2 | 3  "
+    puts "\nColumn     1   2   3"
     n = 0
     3.times do
-      puts "Row #{n + 1}: [ #{@game[n][0]} | #{@game[n][1]} | #{@game[n][2]} ]"
+      puts "Row    #{n + 1} [ #{@game[n][0]} | #{@game[n][1]} | #{@game[n][2]} ]"
       n += 1
     end
     puts " "
