@@ -17,6 +17,10 @@ class TicTackToe
             end
   end
 
+  def whose_turn
+    "It's #{@turn}'s turn"
+  end
+
   def input_to_board(row, column)
     row = row.to_i
     column = column.to_i
@@ -66,6 +70,7 @@ class TicTackToe
   end
 
   def game_not_over?
+
     [game_vertical, game_horizontal, game_diagonal, draw].each do
       unless @game_type.nil?
         puts "Finish type #{@game_type}"
@@ -105,6 +110,7 @@ game = TicTackToe.new(player1, player2)
 game.display_the_board
 
 while game.game_not_over?
+  puts game.whose_turn
   puts 'Insert the row of your choice:'
   row = gets.chomp
   break if row.downcase == 'quit' || row.downcase == 'end'
