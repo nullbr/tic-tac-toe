@@ -57,7 +57,7 @@ RSpec.describe TicTacToe do
         game.input_to_board(1, 2)
         game.input_to_board(3, 1)
         game.input_to_board(1, 3)
-        #puts game.display_the_board
+        # puts game.display_the_board
         expect(game.game_not_over?).to_not be_truthy
       end
 
