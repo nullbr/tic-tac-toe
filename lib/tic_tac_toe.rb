@@ -48,12 +48,12 @@ class TicTacToe
 
   def game_diagonal
     middle = @game[1][1]
-    unless middle == ' '
-      if @game[0][0] == middle && middle == @game[2][2]
-        @game_type = 'Diagonal'
-      elsif @game[0][2] == middle && middle == @game[2][0]
-        @game_type = 'Diagonal'
-      end
+    return if middle == ' '
+
+    if @game[0][0] == middle && middle == @game[2][2]
+      @game_type = 'Diagonal'
+    elsif @game[0][2] == middle && middle == @game[2][0]
+      @game_type = 'Diagonal'
     end
   end
 
@@ -62,7 +62,6 @@ class TicTacToe
   end
 
   def game_not_over?
-
     [game_vertical, game_horizontal, game_diagonal, draw].each do
       unless @game_type.nil?
         puts "Finish type #{@game_type}"
