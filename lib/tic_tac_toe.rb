@@ -10,11 +10,7 @@ class TicTacToe
 
   def current_player
     @draw += 1
-    @turn = if @turn == @player1
-              @player2
-            else
-              @player1
-            end
+    @turn = @turn == @player1 ? @player2 : @player1
   end
 
   def whose_turn

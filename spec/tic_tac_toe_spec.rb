@@ -6,10 +6,18 @@ RSpec.describe TicTacToe do
       game = TicTacToe.new('Bruno', 'Giu')
       expect(game.input_to_board(1, 1)).to eq('Giu')
     end
-
+    
     it 'returns nil if play is not valid' do
       game = TicTacToe.new('Bruno', 'Giu')
       expect(game.input_to_board(4, 1)).to_not eq('Giu')
+    end
+  end
+  
+  describe '#current_player' do
+    it 'returns player 1 if no one has played' do
+      player1 = 'Bruno'
+      game = TicTacToe.new(player1, 'Giu')
+      expect(game.current_player).to be(player1) 
     end
   end
   
