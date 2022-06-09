@@ -1,4 +1,4 @@
-class TicTackToe
+class TicTacToe
   def initialize(player1, player2)
     @player1 = player1
     @player2 = player2
@@ -24,12 +24,8 @@ class TicTackToe
   def input_to_board(row, column)
     row = row.to_i
     column = column.to_i
-    if @game[row - 1][column - 1] == ' ' && row.between?(1, 3) && column.between?(1, 3)
-      @game[row - 1][column - 1] = if @turn == @player1
-                                     'X'
-                                   else
-                                     'O'
-                                   end
+    if row.between?(1, 3) && column.between?(1, 3) && @game[row - 1][column - 1] == ' '
+      @game[row - 1][column - 1] = @turn == @player1 ? 'X' : 'O'
       current_player
     else
       puts "\nThis spot is non existent or is taken, go again\n"
@@ -92,35 +88,12 @@ class TicTackToe
   end
 
   def display_the_board
-    puts "\nColumn     1   2   3"
+    board = "\nColumn     1   2   3\n"
     n = 0
     3.times do
-      puts "Row    #{n + 1} [ #{@game[n][0]} | #{@game[n][1]} | #{@game[n][2]} ]"
+      board += "Row    #{n + 1} [ #{@game[n][0]} | #{@game[n][1]} | #{@game[n][2]} ]\n"
       n += 1
     end
-    puts ' '
+    board
   end
 end
-
-puts 'Insert player X name: '
-player1 = gets.chomp
-puts 'Insert player O name: '
-player2 = gets.chomp
-game = TicTackToe.new(player1, player2)
-game.display_the_board
-
-while game.game_not_over?
-  puts game.whose_turn
-  puts 'Insert the row of your choice:'
-  row = gets.chomp
-  break if row.downcase == 'quit' || row.downcase == 'end'
-
-  puts 'Insert the column of your choice:'
-  column = gets.chomp
-  break if column.downcase == 'quit' || column.downcase == 'end'
-
-  game.input_to_board(row, column)
-  game.display_the_board
-end
-
-game.winner
