@@ -1,27 +1,29 @@
-require './lib/tic_tac_toe'
+# frozen_string_literal: true
 
-puts 'Insert player X name: '
+require "./lib/tic_tac_toe"
+
+puts "Insert player X name: "
 player1 = gets.chomp
-puts 'Insert player O name: '
+puts "Insert player O name: "
 player2 = gets.chomp
 game = TicTacToe.new(player1, player2)
 
-system 'clear'
+system "clear"
 puts game.display_the_board
 
 while game.game_not_over?
   puts game.whose_turn
-  puts 'Insert the row of your choice:'
+  puts "Insert the row of your choice:"
   row = gets.chomp
-  break if row.downcase == 'quit' || row.downcase == 'end'
+  break if row.downcase == "quit" || row.downcase == "end"
 
-  puts 'Insert the column of your choice:'
+  puts "Insert the column of your choice:"
   column = gets.chomp
-  break if column.downcase == 'quit' || column.downcase == 'end'
+  break if column.downcase == "quit" || column.downcase == "end"
 
   game.input_to_board(row, column)
 
-  system 'clear'
+  system "clear"
   puts game.display_the_board
 end
 
