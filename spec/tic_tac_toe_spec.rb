@@ -41,7 +41,7 @@ RSpec.describe Game do
     end
   end
 
-  describe "#display_the_board" do
+  describe ".display_the_board" do
     it "display an empty board" do
       game = Game.new("Bruno", "Giu")
       empty_board = " 0 | 1 | 2\n===+===+===\n 3 | 4 | 5\n===+===+===\n 6 | 7 | 8\n"
@@ -54,6 +54,20 @@ RSpec.describe Game do
       game.input_to_board("3")
       board = " 0 | X | 2\n===+===+===\n O | 4 | 5\n===+===+===\n 6 | 7 | 8\n"
       expect(game.display_the_board).to eq(board)
+    end
+  end
+
+  describe ".tied?" do
+    it "returns true if game is tied" do
+      game = Game.new("Bruno", "Giu")
+      game.board.each { |spot| game.input_to_board(spot) }
+      expect(game.tied?).to be_truthy
+    end
+
+    it "returns false if game is not tied" do
+      game = Game.new("Bruno", "Giu")
+      game.input_to_board("1")
+      expect(game.tied?).to be_falsey
     end
   end
 
