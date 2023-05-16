@@ -13,7 +13,7 @@ class Game
     @game_type = nil
   end
 
-  def current_player
+  def next_player
     @draw += 1
     @turn = @turn == @player1 ? @player2 : @player1
   end
@@ -22,14 +22,19 @@ class Game
     "It's #{@turn}'s turn"
   end
 
-  def input_to_board(row, column)
-    row = row.to_i
-    column = column.to_i
-    if row.between?(1, 3) && column.between?(1, 3) && @board[row - 1][column - 1] == " "
-      @board[row - 1][column - 1] = @turn == @player1 ? "X" : "O"
-      current_player
+  # returns false if input is invalid
+  # return true and calls next player if valid
+  def input_to_board(spot)
+    if spot_valid?(spot)
+      @board[spot.to_i] = @turn == @player1 ? "X" : "O"
+
+      # calls next player
+      next_player
+
+      true
     else
       puts "\nThis spot is non existent or is taken, go again\n"
+      false
     end
   end
 
@@ -53,7 +58,7 @@ class Game
 
   def game_diagonal
     middle = @board[1][1]
-    return if middle == " "
+    return unless %w[X O].include?(@board[4])
 
     if @board[0][0] == middle && middle == @board[2][2]
       @game_type = "Diagonal"
@@ -77,7 +82,7 @@ class Game
   end
 
   def winner
-    current_player
+    next_player
     if @game_type == "Draw"
       puts "Nobody won :("
     elsif @game_type.nil?
@@ -87,13 +92,25 @@ class Game
     end
   end
 
+  # return formatted board
+  # rubocop:disable Layout/LineLength
   def display_the_board
-    board = "\nColumn     1   2   3\n"
-    n = 0
-    3.times do
-      board += "Row    #{n + 1} [ #{@board[n][0]} | #{@board[n][1]} | #{@board[n][2]} ]\n"
-      n += 1
-    end
-    board
+    b = @board
+    " #{b[0]} | #{b[1]} | #{b[2]}\n===+===+===\n #{b[3]} | #{b[4]} | #{b[5]}\n===+===+===\n #{b[6]} | #{b[7]} | #{b[8]}\n"
+  end
+  # rubocop:enable Layout/LineLength
+
+  private
+
+  # check if line passed has only X or O to determine if game is over
+  def check_line(line_array)
+    line_array.uniq.length == 1
+  end
+
+  # Check if spot is only a number, between 0 and 8 and not taken
+  def spot_valid?(spot)
+    /^\d$/.match?(spot) &&
+      spot.to_i.between?(0, 8) &&
+      !%w[X O].include?(@board[spot.to_i])
   end
 end

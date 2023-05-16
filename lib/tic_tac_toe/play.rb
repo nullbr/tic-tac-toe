@@ -22,7 +22,7 @@ class Play
 
   def start_game
     # start by printing the board
-    puts display_the_board
+    puts @game.display_the_board
 
     puts "Enter [0-8]:"
     # loop through until the game was won or tied
@@ -41,14 +41,7 @@ class Play
   end
 
   def capture_name(symbol)
-    puts "Insert player #{symbol} name: "
+    puts "\nInsert player #{symbol} name: "
     gets.chomp
   end
-
-  # rubocop:disable Layout/LineLength
-  def display_the_board
-    board = @game.board
-    puts " #{board[0]} | #{board[1]} | #{board[2]}\n===+===+===\n #{board[3]} | #{board[4]} | #{board[5]}\n===+===+===\n #{board[6]} | #{board[7]} | #{board[8]}\n"
-  end
-  # rubocop:enable Layout/LineLength
 end

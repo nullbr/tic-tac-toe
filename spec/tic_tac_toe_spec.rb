@@ -2,58 +2,77 @@
 
 require "./lib/tic_tac_toe/game"
 
-RSpec.describe TicTacToe do
-  describe "#input_to_board" do
-    it "returns current player if play is valid" do
-      game = TicTacToe.new("Bruno", "Giu")
-      expect(game.input_to_board(1, 1)).to eq("Giu")
+RSpec.describe Game do
+  describe ".input_to_board" do
+    before do
+      @game = Game.new("Bruno", "Giu")
+    end
+    context "returns true when user enters " do
+      it "valid spot 2" do
+        expect(@game.input_to_board("2")).to be_truthy
+      end
+
+      it "valid spot 7" do
+        expect(@game.input_to_board("7")).to be_truthy
+      end
     end
 
-    it "returns nil if play is not valid" do
-      game = TicTacToe.new("Bruno", "Giu")
-      expect(game.input_to_board(4, 1)).to_not eq("Giu")
+    context "returns false when user enters " do
+      it "a letter" do
+        expect(@game.input_to_board("a")).to be_falsey
+      end
+
+      it "invalid spot" do
+        expect(@game.input_to_board("10")).to be_falsey
+      end
+
+      it "spot taken" do
+        @game.input_to_board("6")
+        expect(@game.input_to_board("6")).to be_falsey
+      end
     end
   end
 
-  describe "#current_player" do
+  describe ".next_player" do
     it "returns player 2 if no one has played" do
       player2 = "Bruno"
-      game = TicTacToe.new("Giu", player2)
-      expect(game.current_player).to be(player2)
+      game = Game.new("Giu", player2)
+      expect(game.next_player).to be(player2)
     end
   end
 
   describe "#display_the_board" do
     it "display an empty board" do
-      game = TicTacToe.new("Bruno", "Giu")
-      empty_board = "\nColumn     1   2   3\n"\
-                    "Row    1 [   |   |   ]\n"\
-                    "Row    2 [   |   |   ]\n"\
-                    "Row    3 [   |   |   ]\n"
+      game = Game.new("Bruno", "Giu")
+      empty_board = " 0 | 1 | 2\n===+===+===\n 3 | 4 | 5\n===+===+===\n 6 | 7 | 8\n"
       expect(game.display_the_board).to eq(empty_board)
     end
 
     it "display game, after two moves" do
-      game = TicTacToe.new("Bruno", "Giu")
-      game.input_to_board(1, 1)
-      game.input_to_board(2, 2)
-      board = "\nColumn     1   2   3\n"\
-                    "Row    1 [ X |   |   ]\n"\
-                    "Row    2 [   | O |   ]\n"\
-                    "Row    3 [   |   |   ]\n"
+      game = Game.new("Bruno", "Giu")
+      game.input_to_board("1")
+      game.input_to_board("3")
+      board = " 0 | X | 2\n===+===+===\n O | 4 | 5\n===+===+===\n 6 | 7 | 8\n"
       expect(game.display_the_board).to eq(board)
     end
   end
 
-  describe "#game_not_over" do
+  describe ".diagonal" do
+    context "check if game won diagonaly: " do
+      it "returns true if 1, 4, 8 is X" do
+      end
+    end
+  end
+
+  describe ".game_not_over" do
     context "returns true has not finished, else returns false" do
       it "not won" do
-        game = TicTacToe.new("Bruno", "Giu")
+        game = Game.new("Bruno", "Giu")
         expect(game.game_not_over?).to be_truthy
       end
 
       it "win horizontaly" do
-        game = TicTacToe.new("Bruno", "Giu")
+        game = Game.new("Bruno", "Giu")
         game.input_to_board(1, 1)
         game.input_to_board(2, 2)
         game.input_to_board(1, 2)
@@ -64,7 +83,7 @@ RSpec.describe TicTacToe do
       end
 
       it "win diagonally" do
-        game = TicTacToe.new("Bruno", "Giu")
+        game = Game.new("Bruno", "Giu")
         game.input_to_board(1, 1)
         game.input_to_board(2, 2)
         game.input_to_board(1, 2)
@@ -76,7 +95,7 @@ RSpec.describe TicTacToe do
       end
 
       it "win diagonally in the other direction" do
-        game = TicTacToe.new("Bruno", "Giu")
+        game = Game.new("Bruno", "Giu")
         game.input_to_board(1, 1)
         game.input_to_board(2, 1)
         game.input_to_board(2, 2)
@@ -87,7 +106,7 @@ RSpec.describe TicTacToe do
       end
 
       it "win verticaly" do
-        game = TicTacToe.new("Bruno", "Giu")
+        game = Game.new("Bruno", "Giu")
         game.input_to_board(1, 2)
         game.input_to_board(2, 1)
         game.input_to_board(2, 2)
