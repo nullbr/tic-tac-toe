@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 # Main Game File
-class TicTacToe
+class Game
+  attr_reader :board
+
   def initialize(player1, player2)
     @player1 = player1
     @player2 = player2
-    @game = [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]
+    @board = %w[0 1 2 3 4 5 6 7 8]
     @turn = player1
     @draw = 0
     @game_type = nil
@@ -23,8 +25,8 @@ class TicTacToe
   def input_to_board(row, column)
     row = row.to_i
     column = column.to_i
-    if row.between?(1, 3) && column.between?(1, 3) && @game[row - 1][column - 1] == " "
-      @game[row - 1][column - 1] = @turn == @player1 ? "X" : "O"
+    if row.between?(1, 3) && column.between?(1, 3) && @board[row - 1][column - 1] == " "
+      @board[row - 1][column - 1] = @turn == @player1 ? "X" : "O"
       current_player
     else
       puts "\nThis spot is non existent or is taken, go again\n"
@@ -32,7 +34,7 @@ class TicTacToe
   end
 
   def game_horizontal
-    @game.each do |row|
+    @board.each do |row|
       if row.all? { |spot| spot == "X" }
         @game_type = "Horizontal"
       elsif row.all? { |spot| spot == "0" }
@@ -44,18 +46,18 @@ class TicTacToe
   def game_vertical
     n = 0
     3.times do
-      @game_type = "Vertical" if @game[0][n] != " " && @game[0][n] == @game[1][n] && @game[1][n] == @game[2][n]
+      @game_type = "Vertical" if @board[0][n] != " " && @board[0][n] == @board[1][n] && @board[1][n] == @board[2][n]
       n += 1
     end
   end
 
   def game_diagonal
-    middle = @game[1][1]
+    middle = @board[1][1]
     return if middle == " "
 
-    if @game[0][0] == middle && middle == @game[2][2]
+    if @board[0][0] == middle && middle == @board[2][2]
       @game_type = "Diagonal"
-    elsif @game[0][2] == middle && middle == @game[2][0]
+    elsif @board[0][2] == middle && middle == @board[2][0]
       @game_type = "Diagonal"
     end
   end
@@ -89,7 +91,7 @@ class TicTacToe
     board = "\nColumn     1   2   3\n"
     n = 0
     3.times do
-      board += "Row    #{n + 1} [ #{@game[n][0]} | #{@game[n][1]} | #{@game[n][2]} ]\n"
+      board += "Row    #{n + 1} [ #{@board[n][0]} | #{@board[n][1]} | #{@board[n][2]} ]\n"
       n += 1
     end
     board
