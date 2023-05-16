@@ -45,8 +45,10 @@ class Play
     gets.chomp
   end
 
+  # rubocop:disable Layout/LineLength
   def display_the_board
     board = @game.board
     puts " #{board[0]} | #{board[1]} | #{board[2]}\n===+===+===\n #{board[3]} | #{board[4]} | #{board[5]}\n===+===+===\n #{board[6]} | #{board[7]} | #{board[8]}\n"
   end
+  # rubocop:enable Layout/LineLength
 end
