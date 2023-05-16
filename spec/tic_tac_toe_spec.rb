@@ -57,17 +57,40 @@ RSpec.describe Game do
     end
   end
 
-  describe ".tied?" do
-    it "returns true if game is tied" do
-      game = Game.new("Bruno", "Giu")
-      game.board.each { |spot| game.input_to_board(spot) }
-      expect(game.tied?).to be_truthy
+  describe ".tied" do
+    before do
+      @game = Game.new("Bruno", "Giu")
     end
 
     it "returns false if game is not tied" do
-      game = Game.new("Bruno", "Giu")
-      game.input_to_board("1")
-      expect(game.tied?).to be_falsey
+      @game.input_to_board("8")
+      @game.tied
+      expect(@game.win_type).to eq("")
+    end
+
+    it "returns true if game is tied" do
+      9.times { |spot| @game.input_to_board(spot.to_s) }
+      @game.tied
+      expect(@game.win_type).to eq("Tie")
+    end
+  end
+
+  describe ".vertical_win" do
+    before do
+      @game = Game.new("Bruno", "Giu")
+    end
+
+    it "returns false if player does not win vertically" do
+      [1, 2, 3, 4, 5].each { |spot| @game.input_to_board(spot.to_s) }
+      @game.vertical_win
+      expect(@game.win_type).to eq("")
+    end
+
+    it "returns true if player win vertically" do
+      [0, 1, 3, 4, 6].each { |spot| @game.input_to_board(spot.to_s) }
+      @game.vertical_win
+      expect(@game.win_type).to eq("Vertical")
+      # expect(@game.win_type).to eq(@game.board)
     end
   end
 

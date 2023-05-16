@@ -3,13 +3,14 @@
 # Main Game File
 class Game
   attr_accessor :board
+  attr_reader :win_type
 
   def initialize(player1, player2)
     @player1 = player1
     @player2 = player2
     @board = %w[0 1 2 3 4 5 6 7 8]
     @turn = player1
-    @game_type = nil
+    @win_type = ""
   end
 
   def next_player
@@ -39,19 +40,19 @@ class Game
   def game_horizontal
     board.each do |row|
       if row.all? { |spot| spot == "X" }
-        @game_type = "Horizontal"
+        @win_type = "Horizontal"
       elsif row.all? { |spot| spot == "0" }
-        @game_type = "Horizontal"
+        @win_type = "Horizontal"
       end
     end
   end
 
-  def game_vertical
-    n = 0
-    3.times do
-      @game_type = "Vertical" if board[0][n] != " " && board[0][n] == board[1][n] && board[1][n] == board[2][n]
-      n += 1
-    end
+  # Check if game was won vertically
+  def vertical_win
+    # repeat for every column
+    return unless check_line(0, 3, 6) || check_line(1, 4, 7) || check_line(2, 5, 8)
+
+    @win_type = "Vertical"
   end
 
   def game_diagonal
@@ -59,35 +60,34 @@ class Game
     return unless %w[X O].include?(board[4])
 
     if board[0][0] == middle && middle == board[2][2]
-      @game_type = "Diagonal"
+      @win_type = "Diagonal"
     elsif board[0][2] == middle && middle == board[2][0]
-      @game_type = "Diagonal"
+      @win_type = "Diagonal"
     end
   end
 
   # checks if game is tied
-  def tied?
-    return false unless board.all? { |spot| %w[X O].include?(spot) }
+  def tied
+    return unless board.all? { |spot| %w[X O].include?(spot) }
 
-    @game_type = "Draw"
-    true
+    @win_type = "Tie"
   end
 
   def game_not_over?
     [game_vertical, game_horizontal, game_diagonal, draw].each do
-      unless @game_type.nil?
-        puts "Finish type #{@game_type}"
+      unless @win_type.nil?
+        puts "Finish type #{@win_type}"
         break
       end
     end
-    @game_type.nil? ? true : false
+    @win_type.nil? ? true : false
   end
 
   def winner
     next_player
-    if @game_type == "Draw"
+    if @win_type == "Draw"
       puts "Nobody won :("
-    elsif @game_type.nil?
+    elsif @win_type.nil?
       puts "You ended the game, nobody won"
     else
       puts "And the Winner is #{@turn}!!!"
@@ -102,11 +102,11 @@ class Game
   end
   # rubocop:enable Layout/LineLength
 
-  private
+  # private
 
   # check if line passed has only X or O to determine if game is over
-  def check_line(line_array)
-    line_array.uniq.length == 1
+  def check_line(a, b, c)
+    [board[a], board[b], board[c]].uniq.length == 1
   end
 
   # Check if spot is only a number, between 0 and 8 and not taken
