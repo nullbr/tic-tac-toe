@@ -5,12 +5,19 @@ class Game
   attr_accessor :board
   attr_reader :win_type
 
-  def initialize(player1, player2)
-    @player1 = player1
-    @player2 = player2
+  FINISH_TYPES = {
+    diagonal: [[0, 4, 8], [2, 4, 6]],
+    vertical: [[0, 3, 6], [1, 4, 7], [2, 5, 8]],
+    horizontal: [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
+  }.freeze
+
+  def initialize(player1 = "", player2 = "")
+    @player1 = player1 == "" ? "Player X" : player1
+    @player2 = player2 == "" ? "Player O" : player2
     @board = %w[0 1 2 3 4 5 6 7 8]
     @turn = player1
-    @win_type = ""
+    @win_type = nil
+    @moves = 0
   end
 
   def next_player
@@ -37,45 +44,46 @@ class Game
     end
   end
 
-  # Check if game was won horizontally
-  def horizontal_win
-    # repeat for every row
-    return unless check_line(0, 1, 2) || check_line(3, 4, 5) || check_line(6, 7, 8)
+  # # Check if game was won horizontally
+  # def horizontal_win?
+  #   # repeat for every row
+  #   return false unless check_line(0, 1, 2) || check_line(3, 4, 5) || check_line(6, 7, 8)
 
-    @win_type = "Horizontal"
-  end
+  #   @win_type = "Horizontal"
+  #   true
+  # end
 
-  # Check if game was won vertically
-  def vertical_win
-    # repeat for every column
-    return unless check_line(0, 3, 6) || check_line(1, 4, 7) || check_line(2, 5, 8)
+  # # Check if game was won vertically
+  # def vertical_win?
+  #   # repeat for every column
+  #   return false unless check_line(0, 3, 6) || check_line(1, 4, 7) || check_line(2, 5, 8)
 
-    @win_type = "Vertical"
-  end
+  #   @win_type = "Vertical"
+  #   true
+  # end
 
-  # check if game was won diagonaly
-  def diagonal_win
-    # return if spot for is not taken and not won diagonally
-    return unless %w[X O].include?(board[4]) && (check_line(0, 4, 8) || check_line(2, 4, 6))
+  # # check if game was won diagonaly
+  # def diagonal_win?
+  #   # return if spot for is not taken and not won diagonally
+  #   return false unless %w[X O].include?(board[4]) && (check_line(0, 4, 8) || check_line(2, 4, 6))
 
-    @win_type = "Diagonal"
-  end
+  #   @win_type = "Diagonal"
+  #   true
+  # end
 
-  # checks if game is tied
-  def tied
-    return unless board.all? { |spot| %w[X O].include?(spot) }
+  # # checks if game is tied
+  # def tied?
+  #   return true unless board.all? { |spot| %w[X O].include?(spot) }
 
-    @win_type = "Tie"
-  end
+  #   @win_type = "Tie"
+  #   true
+  # end
 
-  def game_not_over?
-    [game_vertical, game_horizontal, game_diagonal, draw].each do
-      unless @win_type.nil?
-        puts "Finish type #{@win_type}"
-        break
-      end
-    end
-    @win_type.nil? ? true : false
+  # Checks all game possibilities and returns true if game won or false if not
+  def game_is_over?
+    @win_type = @moves == 9 ? "tie" : check_patterns
+
+    @win_type.nil?
   end
 
   def winner
@@ -99,9 +107,16 @@ class Game
 
   # private
 
+  # Iterate over each finish type pattern and return finish type if any
+  def check_patterns
+    FINISH_TYPES.select { |_name, patterns| patterns.any? { |pattern| check_line(pattern) } }.keys.first
+  end
+
   # check if line passed has only X or O to determine if game is over
-  def check_line(a, b, c)
-    [board[a], board[b], board[c]].uniq.length == 1
+  def check_line(pattern)
+    spots = pattern.map { |spot_num| board[spot_num] }
+
+    spots.uniq.length == 1
   end
 
   # Check if spot is only a number, between 0 and 8 and not taken
