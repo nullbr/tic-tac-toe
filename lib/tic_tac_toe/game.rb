@@ -5,10 +5,11 @@ class Game
   attr_accessor :board
   attr_reader :win_type
 
+  # Determine the possible types of game finish
   FINISH_TYPES = {
-    diagonal: [[0, 4, 8], [2, 4, 6]],
-    vertical: [[0, 3, 6], [1, 4, 7], [2, 5, 8]],
-    horizontal: [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
+    "diagonal": [[0, 4, 8], [2, 4, 6]],
+    "vertical": [[0, 3, 6], [1, 4, 7], [2, 5, 8]],
+    "horizontal": [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
   }.freeze
 
   def initialize(player1 = "", player2 = "")
@@ -44,46 +45,15 @@ class Game
     end
   end
 
-  # # Check if game was won horizontally
-  # def horizontal_win?
-  #   # repeat for every row
-  #   return false unless check_line(0, 1, 2) || check_line(3, 4, 5) || check_line(6, 7, 8)
-
-  #   @win_type = "Horizontal"
-  #   true
-  # end
-
-  # # Check if game was won vertically
-  # def vertical_win?
-  #   # repeat for every column
-  #   return false unless check_line(0, 3, 6) || check_line(1, 4, 7) || check_line(2, 5, 8)
-
-  #   @win_type = "Vertical"
-  #   true
-  # end
-
-  # # check if game was won diagonaly
-  # def diagonal_win?
-  #   # return if spot for is not taken and not won diagonally
-  #   return false unless %w[X O].include?(board[4]) && (check_line(0, 4, 8) || check_line(2, 4, 6))
-
-  #   @win_type = "Diagonal"
-  #   true
-  # end
-
-  # # checks if game is tied
-  # def tied?
-  #   return true unless board.all? { |spot| %w[X O].include?(spot) }
-
-  #   @win_type = "Tie"
-  #   true
-  # end
-
   # Checks all game possibilities and returns true if game won or false if not
   def game_is_over?
-    @win_type = @moves == 9 ? "tie" : check_patterns
+    if (type = check_patterns)
+      @win_type = type.to_s
+    elsif @moves == 9
+      @win_type = "tie"
+    end
 
-    @win_type.nil?
+    !@win_type.nil?
   end
 
   def winner
@@ -121,6 +91,8 @@ class Game
 
   # Check if spot is only a number, between 0 and 8 and not taken
   def spot_valid?(spot)
+    spot = spot.is_a?(Integer) ? spot.to_s : spot
+
     /^\d$/.match?(spot) &&
       spot.to_i.between?(0, 8) &&
       !%w[X O].include?(board[spot.to_i])
