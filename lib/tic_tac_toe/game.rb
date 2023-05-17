@@ -37,14 +37,12 @@ class Game
     end
   end
 
-  def game_horizontal
-    board.each do |row|
-      if row.all? { |spot| spot == "X" }
-        @win_type = "Horizontal"
-      elsif row.all? { |spot| spot == "0" }
-        @win_type = "Horizontal"
-      end
-    end
+  # Check if game was won horizontally
+  def horizontal_win
+    # repeat for every row
+    return unless check_line(0, 1, 2) || check_line(3, 4, 5) || check_line(6, 7, 8)
+
+    @win_type = "Horizontal"
   end
 
   # Check if game was won vertically
@@ -55,15 +53,12 @@ class Game
     @win_type = "Vertical"
   end
 
-  def game_diagonal
-    middle = board[1][1]
-    return unless %w[X O].include?(board[4])
+  # check if game was won diagonaly
+  def diagonal_win
+    # return if spot for is not taken and not won diagonally
+    return unless %w[X O].include?(board[4]) && (check_line(0, 4, 8) || check_line(2, 4, 6))
 
-    if board[0][0] == middle && middle == board[2][2]
-      @win_type = "Diagonal"
-    elsif board[0][2] == middle && middle == board[2][0]
-      @win_type = "Diagonal"
-    end
+    @win_type = "Diagonal"
   end
 
   # checks if game is tied

@@ -3,10 +3,10 @@
 require "./lib/tic_tac_toe/game"
 
 RSpec.describe Game do
+  before do
+    @game = Game.new("Bruno", "Giu")
+  end
   describe ".input_to_board" do
-    before do
-      @game = Game.new("Bruno", "Giu")
-    end
     context "returns true when user enters " do
       it "valid spot 2" do
         expect(@game.input_to_board("2")).to be_truthy
@@ -58,10 +58,6 @@ RSpec.describe Game do
   end
 
   describe ".tied" do
-    before do
-      @game = Game.new("Bruno", "Giu")
-    end
-
     it "returns false if game is not tied" do
       @game.input_to_board("8")
       @game.tied
@@ -75,28 +71,68 @@ RSpec.describe Game do
     end
   end
 
-  describe ".vertical_win" do
-    before do
-      @game = Game.new("Bruno", "Giu")
-    end
+  describe ".horizontal_win" do
+    context "check if game won diagonaly: " do
+      it "expects game_type to be empty" do
+        [1, 2, 3, 4, 5].each { |spot| @game.input_to_board(spot.to_s) }
+        @game.horizontal_win
+        expect(@game.win_type).to eq("")
+      end
 
-    it "returns false if player does not win vertically" do
-      [1, 2, 3, 4, 5].each { |spot| @game.input_to_board(spot.to_s) }
-      @game.vertical_win
-      expect(@game.win_type).to eq("")
-    end
+      it "expects game type to be vertical with x on 0, 1, 2" do
+        [0, 5, 2, 4, 1].each { |spot| @game.input_to_board(spot.to_s) }
+        @game.horizontal_win
+        expect(@game.win_type).to eq("Horizontal")
+      end
 
-    it "returns true if player win vertically" do
-      [0, 1, 3, 4, 6].each { |spot| @game.input_to_board(spot.to_s) }
-      @game.vertical_win
-      expect(@game.win_type).to eq("Vertical")
-      # expect(@game.win_type).to eq(@game.board)
+      it "expects game type to be vertical with O on 6, 7, 8" do
+        [0, 6, 3, 7, 5, 8].each { |spot| @game.input_to_board(spot.to_s) }
+        @game.horizontal_win
+        expect(@game.win_type).to eq("Horizontal")
+      end
     end
   end
 
-  describe ".diagonal" do
+  describe ".vertical_win" do
     context "check if game won diagonaly: " do
-      it "returns true if 1, 4, 8 is X" do
+      it "expects game_type to be empty" do
+        [1, 2, 3, 4, 5].each { |spot| @game.input_to_board(spot.to_s) }
+        @game.vertical_win
+        expect(@game.win_type).to eq("")
+      end
+
+      it "expects game type to be vertical with x on 0, 3, 6" do
+        [0, 1, 3, 4, 6].each { |spot| @game.input_to_board(spot.to_s) }
+        @game.vertical_win
+        expect(@game.win_type).to eq("Vertical")
+      end
+
+      it "expects game type to be vertical with O on 1, 4, 7" do
+        [0, 1, 3, 4, 6].each { |spot| @game.input_to_board(spot.to_s) }
+        @game.vertical_win
+        expect(@game.win_type).to eq("Vertical")
+      end
+    end
+  end
+
+  describe ".diagonal_win" do
+    context "check if game won diagonaly: " do
+      it "expects game_type to be empty" do
+        [1, 2, 3, 4, 8].each { |spot| @game.input_to_board(spot.to_s) }
+        @game.diagonal_win
+        expect(@game.win_type).to eq("")
+      end
+
+      it "expects game type to be diagonal with x on 0, 4, 8" do
+        [0, 1, 4, 5, 8].each { |spot| @game.input_to_board(spot.to_s) }
+        @game.diagonal_win
+        expect(@game.win_type).to eq("Diagonal")
+      end
+
+      it "expects game type to be diagonal with O on 2, 4, 6" do
+        [0, 2, 5, 4, 7, 6].each { |spot| @game.input_to_board(spot.to_s) }
+        @game.diagonal_win
+        expect(@game.win_type).to eq("Diagonal")
       end
     end
   end
