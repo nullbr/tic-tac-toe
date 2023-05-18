@@ -16,33 +16,32 @@ class Game
     @player1 = player1 == "" ? "Player X" : player1
     @player2 = player2 == "" ? "Player O" : player2
     @board = %w[0 1 2 3 4 5 6 7 8]
-    @turn = player1
+    @current_player = player1
     @win_type = nil
     @moves = 0
   end
 
+  # checks who is current player and sets it to the other player
   def next_player
-    @turn = @turn == @player1 ? @player2 : @player1
+    @current_player = @current_player == @player1 ? @player2 : @player1
   end
 
+  # returns current player
   def whose_turn
-    "It's #{@turn}'s turn"
+    @current_player
   end
 
   # returns false if input is invalid
   # return true and calls next player if valid
   def input_to_board(spot)
-    if spot_valid?(spot)
-      board[spot.to_i] = @turn == @player1 ? "X" : "O"
+    return false unless spot_valid?(spot)
 
-      # calls next player
-      next_player
+    board[spot.to_i] = @current_player == @player1 ? "X" : "O"
 
-      true
-    else
-      puts "\nThis spot is non existent or is taken, go again\n"
-      false
-    end
+    # calls next player
+    next_player
+
+    true
   end
 
   # Checks all game possibilities and returns true if game won or false if not
@@ -56,15 +55,18 @@ class Game
     !@win_type.nil?
   end
 
+  # returns the winner
   def winner
+    return if @win_type.nil?
+
     next_player
-    if @win_type == "Draw"
-      puts "Nobody won :("
-    elsif @win_type.nil?
-      puts "You ended the game, nobody won"
-    else
-      puts "And the Winner is #{@turn}!!!"
-    end
+    # if @win_type == "Draw"
+    #   puts "Nobody won :("
+    # elsif @win_type.nil?
+    #   puts "You ended the game, nobody won"
+    # else
+    #   puts "And the Winner is #{@current_player}!!!"
+    # end
   end
 
   # return formatted board

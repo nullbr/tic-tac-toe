@@ -4,7 +4,9 @@ require "./lib/tic_tac_toe/game"
 
 RSpec.describe Game do
   before do
-    @game = Game.new("Bruno", "Giu")
+    @player1 = "Bruno"
+    @player2 = "Giu"
+    @game = Game.new(@player1, @player2)
   end
   describe ".input_to_board" do
     context "returns true when user enters " do
@@ -38,14 +40,6 @@ RSpec.describe Game do
         @game.input_to_board("6")
         expect(@game.input_to_board("6")).to be_falsey
       end
-    end
-  end
-
-  describe ".next_player" do
-    it "returns player 2 if no one has played" do
-      player2 = "Bruno"
-      game = Game.new("Giu", player2)
-      expect(game.next_player).to be(player2)
     end
   end
 
@@ -149,6 +143,41 @@ RSpec.describe Game do
         [6, 1, 7, 4, 8].each { |n| @game.input_to_board(n) }
         expect(@game.game_is_over?).to be_truthy
         expect(@game.win_type).to eq "horizontal"
+      end
+    end
+
+    describe ".next_player" do
+      it "returns player 2" do
+        player2 = "Bruno"
+        game = Game.new("Giu", player2)
+        expect(game.next_player).to be(player2)
+      end
+    end
+
+    describe ".whose_turn" do
+      it "returns initial player" do
+        expect(@game.whose_turn).to eq @player1
+      end
+
+      it "returns player 2 after 3 moves" do
+        @game.input_to_board(1)
+        @game.input_to_board(2)
+        @game.input_to_board(7)
+        expect(@game.whose_turn).to eq @player2
+      end
+    end
+
+    describe ".winner" do
+      it "returns player 1 as winner" do
+        [3, 1, 4, 6, 5].each { |n| @game.input_to_board(n) }
+        @game.game_is_over?
+        expect(@game.winner).to eq @player1
+      end
+
+      it "returns player 2 as winner" do
+        [1, 2, 5, 4, 3, 6].each { |n| @game.input_to_board(n) }
+        @game.game_is_over?
+        expect(@game.winner).to eq @player2
       end
     end
   end

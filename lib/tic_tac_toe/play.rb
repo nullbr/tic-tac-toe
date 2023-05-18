@@ -27,6 +27,8 @@ class Play
     puts "Enter [0-8]:"
     # loop through until the game was won or tied
     while game_not_over?
+      puts game.whose_turn
+
       get_human_spot
       eval_board unless game_not_over?
       puts display_the_board
