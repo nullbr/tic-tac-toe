@@ -51,6 +51,7 @@ class GamePlay
     puts "Tic Tac Toe".art
     puts "\t\t\t\t\t   by Bruno Leite"
     puts "\nLets Play!\n"
+    puts "\nFor instructions type 'help' at any moment.\nType 'quit' or 'exit' to leave the game\n"
   end
 
   def set_game_mode

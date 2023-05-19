@@ -58,6 +58,16 @@ class Game
     !@win_type.nil?
   end
 
+  # check if a move will lead into finishing the game
+  def will_be_over?(spot, symbol)
+    board[spot] = symbol
+
+    over = game_is_over?
+    board[spot] = spot
+
+    over
+  end
+
   # returns the winner
   def winner
     return if @win_type.nil? || @win_type == "tie"

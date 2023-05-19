@@ -16,49 +16,26 @@ class Computer < Player
     { 1 => "Easy", 2 => "Hard" }
   end
 
-  def eval_board
-    spot = nil
-    until spot
-      if @board[4] == "4"
-        spot = 4
-        @board[spot] = @com
-      else
-        spot = get_best_move(@board, @com)
-        if @board[spot] != "X" && @board[spot] != "O"
-          @board[spot] = @com
-        else
-          spot = nil
-        end
-      end
+  # Get computer choice of spot
+  def move(game)
+    if game.available_spots.include?(4)
+      4
+    else
+      get_best_move(game)
     end
   end
 
-  def get_best_move(board, _next_player, _depth = 0, _best_score = {})
-    available_spaces = []
-    best_move = nil
-    board.each do |s|
-      available_spaces << s if s != "X" && s != "O"
-    end
-    available_spaces.each do |as|
-      board[as.to_i] = @com
-      if game_is_over(board)
-        best_move = as.to_i
-        board[as.to_i] = as
-        return best_move
-      else
-        board[as.to_i] = @hum
-        if game_is_over(board)
-          best_move = as.to_i
-          board[as.to_i] = as
-          return best_move
-        else
-          board[as.to_i] = as
-        end
+  def get_best_move(game)
+    game.available_spots.select do |spot|
+      if game.will_be_over?(spot, @symbol)
+        spot
+      elsif game.will_be_over?(spot, opponent_symbol)
+        spot
       end
-    end
-    return best_move if best_move
+    end.first
+  end
 
-    n = rand(0..available_spaces.count)
-    available_spaces[n].to_i
+  def opponent_symbol
+    @symbol == "X" ? @symbol : "O"
   end
 end

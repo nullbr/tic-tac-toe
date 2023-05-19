@@ -186,4 +186,16 @@ RSpec.describe Game do
       expect(@game.winner).to eq nil
     end
   end
+
+  describe ".will_be_over?" do
+    it "returns true if move leads to game over" do
+      [0, 1, 4, 5].each { |n| @game.input_to_board(n) }
+      expect(@game.will_be_over?(8, "X")).to be_truthy
+    end
+
+    it "returns false if move does not lead to game over" do
+      [0, 1, 4, 5].each { |n| @game.input_to_board(n) }
+      expect(@game.will_be_over?(2, "X")).to be_falsey
+    end
+  end
 end
