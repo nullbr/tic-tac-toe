@@ -12,9 +12,9 @@ class Game
     horizontal: [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
   }.freeze
 
-  def initialize(player1 = "", player2 = "")
-    @player1 = player1 == "" ? "Player X" : player1
-    @player2 = player2 == "" ? "Player O" : player2
+  def initialize(player1, player2)
+    @player1 = player1
+    @player2 = player2
     @board = %w[0 1 2 3 4 5 6 7 8]
     @current_player = player1
     @win_type = nil
@@ -36,7 +36,7 @@ class Game
   def input_to_board(spot)
     return false unless spot_valid?(spot)
 
-    board[spot.to_i] = @current_player == @player1 ? "X" : "O"
+    board[spot.to_i] = @current_player.symbol
 
     # calls next player
     next_player

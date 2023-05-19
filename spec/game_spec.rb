@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require "./lib/tic_tac_toe/game"
+require "./lib/tic_tac_toe/human"
+
+require "faker"
 
 RSpec.describe Game do
   before do
-    @player1 = "Bruno"
-    @player2 = "Giu"
+    @player1 = Human.new("X", Faker::Name.name)
+    @player2 = Human.new("O", Faker::Name.name)
     @game = Game.new(@player1, @player2)
   end
 
@@ -46,17 +49,15 @@ RSpec.describe Game do
 
   describe ".display_the_board" do
     it "display an empty board" do
-      game = Game.new("Bruno", "Giu")
       empty_board = " 0 | 1 | 2\n===+===+===\n 3 | 4 | 5\n===+===+===\n 6 | 7 | 8\n"
-      expect(game.display_the_board).to eq(empty_board)
+      expect(@game.display_the_board).to eq(empty_board)
     end
 
     it "display game, after two moves" do
-      game = Game.new("Bruno", "Giu")
-      game.input_to_board("1")
-      game.input_to_board("3")
+      @game.input_to_board("1")
+      @game.input_to_board("3")
       board = " 0 | X | 2\n===+===+===\n O | 4 | 5\n===+===+===\n 6 | 7 | 8\n"
-      expect(game.display_the_board).to eq(board)
+      expect(@game.display_the_board).to eq(board)
     end
   end
 
@@ -149,9 +150,7 @@ RSpec.describe Game do
 
     describe ".next_player" do
       it "returns player 2" do
-        player2 = "Bruno"
-        game = Game.new("Giu", player2)
-        expect(game.next_player).to be(player2)
+        expect(@game.next_player).to be(@player2)
       end
     end
 

@@ -11,9 +11,7 @@ class Play
     # Welcome
     welcome_message
 
-    # get players names
-    player1 = capture_name("X")
-    player2 = capture_name("O")
+    # get players
 
     # create game
     @game = Game.new(player1, player2)
