@@ -36,6 +36,13 @@ RSpec.describe ProcessInput do
     $stdin = STDIN
   end
 
+  it "receives valid lowercase string and returns it upercase as per options" do
+    $stdin = StringIO.new("x")
+
+    expect(instance.capture_input(%w[X O])).to eq("X")
+    $stdin = STDIN
+  end
+
   it "puts error message and returns nil if input is invalid" do
     $stdin = StringIO.new("10")
     result = "non nil"

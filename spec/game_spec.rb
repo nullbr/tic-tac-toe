@@ -5,8 +5,8 @@ require "./lib/tic_tac_toe/human"
 
 RSpec.describe Game do
   before do
-    @player1 = Human.new("X", Faker::Name.name, true)
-    @player2 = Human.new("O", Faker::Name.name, false)
+    @player1 = Human.new("X", Faker::Name.name)
+    @player2 = Human.new("O", Faker::Name.name)
     @game = Game.new(@player1, @player2)
   end
 

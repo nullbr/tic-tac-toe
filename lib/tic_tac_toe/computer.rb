@@ -6,9 +6,9 @@ require_relative "player"
 class Computer < Player
   attr_accessor :level
 
-  def initialize(symbol, first = false)
+  def initialize(symbol)
     name = "Mister Computer"
-    super(symbol, name, first)
+    super(symbol, name)
     @level = nil
   end
 

@@ -12,8 +12,6 @@ require_relative "process_input"
 class GamePlay
   attr_reader :player1, :player2
 
-  SYMBOLS = %w[X O].freeze
-
   def initialize; end
 
   def setup
@@ -23,7 +21,7 @@ class GamePlay
     @game_mode = nil
     @player1 = nil
     @player2 = nil
-    @available_symbols = SYMBOLS
+    @available_symbols = %w[X O]
     # Welcome
     welcome_message
     # Get game mode
@@ -92,7 +90,7 @@ class GamePlay
 
     @available_symbols.delete(symbol)
 
-    Human.new(symbol, name, SYMBOLS.index(symbol).zero?)
+    Human.new(symbol, name)
   end
 
   # Get human choice of spot
