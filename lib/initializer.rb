@@ -29,6 +29,6 @@
 
 # game.winner
 
-require_relative "tic_tac_toe/play"
+require_relative "tic_tac_toe/game_play"
 
-Play.new
+GamePlay.new.start_game

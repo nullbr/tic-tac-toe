@@ -12,14 +12,16 @@ require_relative "process_input"
 class GamePlay
   attr_reader :player1, :player2
 
-  def initialize
+  def initialize; end
+
+  def setup
+    # Clear screen before starting game
+    system "clear"
+    # initialize all variables
     @game_mode = nil
     @player1 = nil
     @player2 = nil
     @available_symbols = %w[X O]
-  end
-
-  def start_game
     # Welcome
     welcome_message
     # Get game mode
@@ -30,30 +32,29 @@ class GamePlay
     @game = Game.new(@player1, @player2)
   end
 
-  # def start_game
-  #   # start by printing the board
-  #   puts @game.display_the_board
+  def start_game
+    setup
+    # loop through until the game was won or tied
+    until @game.game_is_over?
+      system "clear"
+      puts @game.display_the_board
 
-  #   puts "Enter [0-8]:"
-  #   # loop through until the game was won or tied
-  #   while game_not_over?
-  #     puts game.whose_turn
+      capture_human_spot
 
-  #     get_human_spot
-  #     eval_board unless game_not_over?
-  #     puts display_the_board
-  #   end
-  #   puts "Game over"
-  # end
+      # eval_board unless game_not_over?
+    end
+
+    end_game
+  end
 
   def welcome_message
     puts "Tic Tac Toe".art
     puts "\t\t\t\t\t   by Bruno Leite"
-    puts "\nLets Play!"
+    puts "\nLets Play!\n"
   end
 
   def set_game_mode
-    puts "Please choose a game mode (0, 1 or 3):\n" \
+    puts "\nChoose a game mode (0, 1 or 3):\n" \
     "\t0 -> Human vs Human\n\t1 -> Human vs Computer\n\t2 -> Computer vs Computer"
 
     @game_mode = capture_input([0, 1, 2]) until @game_mode
@@ -77,14 +78,42 @@ class GamePlay
   private
 
   def human_player(num)
-    puts "Please enter a name for player #{num}:\n"
+    print "\nEnter a name for player #{num}: "
     name = capture_input
 
-    puts "Would you like to play as #{@available_symbols.first} or #{@available_symbols.last}?\n"
-    symbol = capture_input(@available_symbols) until symbol
+    if @available_symbols.count > 1
+      print "\nWould you like to play as #{@available_symbols.first} or #{@available_symbols.last}? "
+      symbol = capture_input(@available_symbols) until symbol
+    else
+      symbol = @available_symbols.first
+    end
+
     @available_symbols.delete(symbol)
 
     Human.new(symbol, name)
+  end
+
+  # Get human choice of spot
+  def capture_human_spot
+    puts "\nIt's #{@game.whose_turn.name}'s turn."
+    print "Enter [0-8]: "
+
+    spot = capture_input(@game.available_spots) until spot
+    @game.input_to_board(spot)
+  end
+
+  # Shows game winner if there is one and offers rematch
+  def end_game
+    puts "\nGame over!"
+    if (winner = @game.winner)
+      puts "\nAnd the Winner is #{winner.name}!!!"
+    else
+      puts "\nNobody won :("
+    end
+
+    print "\nWould you like to play again? [y/n] "
+    choice = capture_input(%w[y n]) until choice
+    choice == "y" ? start_game : abort("\nExiting the game...")
   end
 
   # Helper method to process user input cleanly

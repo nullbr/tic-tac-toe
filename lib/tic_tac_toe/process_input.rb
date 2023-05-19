@@ -17,7 +17,7 @@ class ProcessInput
   def exit_game(input)
     return unless %w[quit end exit].include?(input.downcase)
 
-    abort("Exiting the game...")
+    abort("\nExiting the game...")
   end
 
   # Returns input based on options given
@@ -27,8 +27,10 @@ class ProcessInput
     # Check if string only contains one integer and its in the options
     elsif input !~ /\D/ && options.include?(input.to_i)
       input.to_i
-    elsif options.include?(input)
-      input
+    elsif options.include?(input.downcase)
+      input.downcase
+    elsif options.include?(input.upcase)
+      input.upcase
     end
   end
 

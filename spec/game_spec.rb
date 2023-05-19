@@ -13,11 +13,11 @@ RSpec.describe Game do
   describe ".input_to_board" do
     context "returns true when user enters " do
       it "valid spot 2" do
-        expect(@game.input_to_board("2")).to be_truthy
+        expect(@game.input_to_board(2)).to be_truthy
       end
 
       it "valid spot 7" do
-        expect(@game.input_to_board("7")).to be_truthy
+        expect(@game.input_to_board(7)).to be_truthy
       end
 
       it "valid spot integer" do
@@ -26,21 +26,14 @@ RSpec.describe Game do
     end
 
     context "returns false when user enters: " do
-      it "a letter" do
-        expect(@game.input_to_board("a")).to be_falsey
-      end
-
-      it "invalid spot string" do
-        expect(@game.input_to_board("10")).to be_falsey
-      end
-
-      it "invalid spot integer" do
+      it "invalid spot" do
+        expect(@game.input_to_board(10)).to be_falsey
         expect(@game.input_to_board(15)).to be_falsey
       end
 
       it "spot taken" do
-        @game.input_to_board("6")
-        expect(@game.input_to_board("6")).to be_falsey
+        @game.input_to_board(6)
+        expect(@game.input_to_board(6)).to be_falsey
       end
     end
   end
@@ -52,8 +45,8 @@ RSpec.describe Game do
     end
 
     it "display game, after two moves" do
-      @game.input_to_board("1")
-      @game.input_to_board("3")
+      @game.input_to_board(1)
+      @game.input_to_board(3)
       board = " 0 | X | 2\n===+===+===\n O | 4 | 5\n===+===+===\n 6 | 7 | 8\n"
       expect(@game.display_the_board).to eq(board)
     end
@@ -67,8 +60,8 @@ RSpec.describe Game do
       end
 
       it "returns false if there are two inputs" do
-        @game.input_to_board("3")
-        @game.input_to_board("5")
+        @game.input_to_board(3)
+        @game.input_to_board(5)
         expect(@game.game_is_over?).to be_falsey
         expect(@game.win_type).to eq nil
       end
