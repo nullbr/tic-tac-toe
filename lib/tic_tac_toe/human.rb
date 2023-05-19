@@ -14,22 +14,17 @@ class Human < Player
   def get_input(options = " ")
     input = gets.chomp.strip
 
-    exit_game(input) || display_help(input) ||
-      validate_input(input, options) || input_invalid(options)
+    return if display_help(input)
+
+    exit_game(input) || validate_input(input, options) || input_invalid(options)
   end
+
+  private
 
   def exit_game(input)
     return unless %w[quit end exit].include?(input.downcase)
 
     abort("Exiting the game...")
-  end
-
-  # prints insturctions
-  def display_help(input)
-    return unless input.downcase == "help"
-
-    puts help
-    true
   end
 
   # Returns input if there are no options (no constrains) or
@@ -45,6 +40,14 @@ class Human < Player
   def input_invalid(options)
     puts "Invalid input, please try again. "
     puts "Options are: #{options.join(", ")} " unless options == " "
+  end
+
+  # prints insturctions
+  def display_help(input)
+    return unless input.downcase == "help"
+
+    puts help
+    true
   end
 
   def help

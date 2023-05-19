@@ -8,15 +8,16 @@ RSpec.describe Human do
   let(:human_instance) { described_class.new(%w[X O][rand(0..1)], Faker::Name.name) }
 
   describe ".get_input" do
-    # it "outputs to stdout prompt given in the block" do
-    #   $stdin = StringIO.new("test")
-    #   prompt = "Choose a spot [0-8]:\n"
-    #   expect { human_instance.get_input { puts prompt } }.to output(prompt).to_stdout
-    #   $stdin = STDIN
-    # end
-
     it "returns input without if no options are given" do
       input = "Testing any input"
+      $stdin = StringIO.new(input)
+
+      expect(human_instance.get_input).to eq(input)
+      $stdin = STDIN
+    end
+
+    it "returns name when name is given" do
+      input = Faker::Name.name
       $stdin = StringIO.new(input)
 
       expect(human_instance.get_input).to eq(input)
@@ -49,6 +50,20 @@ RSpec.describe Human do
 
       expect { human_instance.get_input([1, 2, 3]) }.to raise_error(SystemExit, "Exiting the game...")
       $stdin = STDIN
+    end
+
+    it "returns help instructions if input help" do
+      $stdin = StringIO.new("help ")
+
+      expect { human_instance.get_input([1, 2, 3]) }.to output(include("Help instructions")).to_stdout
+      $stdin = STDIN
+    end
+  end
+
+  describe ".name" do
+    it "sets human name" do
+      name = Faker::Name.name
+      expect { human_instance.name = name }.to change { human_instance.name }.to(name)
     end
   end
 end
