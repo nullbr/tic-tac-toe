@@ -5,8 +5,8 @@ require "./lib/tic_tac_toe/human"
 
 RSpec.describe Game do
   before do
-    @player1 = Human.new("X", Faker::Name.name)
-    @player2 = Human.new("O", Faker::Name.name)
+    @player1 = Human.new("X", Faker::Name.name, true)
+    @player2 = Human.new("O", Faker::Name.name, false)
     @game = Game.new(@player1, @player2)
   end
 
@@ -159,7 +159,7 @@ RSpec.describe Game do
       expect(@game.whose_turn).to eq @player1
     end
 
-    it "returns player 2 after 3 moves" do
+    it "returns player after 3 moves" do
       @game.input_to_board(1)
       @game.input_to_board(2)
       @game.input_to_board(7)

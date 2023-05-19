@@ -17,7 +17,7 @@ class Game
     @player2 = player2
     @board = %w[0 1 2 3 4 5 6 7 8]
     @available_spots = (0..8).to_a
-    @current_player = player1
+    @current_player = player1.first? ? player1 : player2
     @win_type = nil
     @moves = 0
   end

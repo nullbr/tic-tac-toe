@@ -7,9 +7,9 @@ require_relative "process_input"
 class Human < Player
   attr_accessor :name
 
-  def initialize(symbol, name = "")
+  def initialize(symbol, name = "", first = false)
     name = name == "" ? "Player #{symbol}" : name
-    super(symbol, name)
+    super(symbol, name, first)
   end
 
   # Get human choice of spot
