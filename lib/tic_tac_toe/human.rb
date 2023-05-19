@@ -14,26 +14,37 @@ class Human < Player
   def get_input(options = " ")
     input = gets.chomp.strip
 
-    if %w[quit end exit].include?(input.downcase)
-      abort("Exiting the game...")
+    exit_game(input) || display_help(input) ||
+      validate_input(input, options) || input_invalid(options)
+  end
 
-    # prints insturctions
-    elsif input.downcase == "help"
-      puts help
+  def exit_game(input)
+    return unless %w[quit end exit].include?(input.downcase)
 
-    # Breaks if there are no options (no constrains)
-    elsif options == " "
-      input
+    abort("Exiting the game...")
+  end
 
-    # Check if string only contains one integer and its the correct type
-    elsif options != " " && input !~ /\D/ && options.include?(input.to_i)
-      input.to_i
+  # prints insturctions
+  def display_help(input)
+    return unless input.downcase == "help"
 
-    # Ask for a valid input type
-    else
-      puts "Invalid input, please try again. "
-      puts "Options are: #{options.join(", ")} " unless options == " "
-    end
+    puts help
+    true
+  end
+
+  # Returns input if there are no options (no constrains) or
+  # Check if string only contains one integer and its in the options
+  def validate_input(input, options)
+    return input if options == " "
+
+    return unless options != " " && input !~ /\D/ && options.include?(input.to_i)
+
+    input.to_i
+  end
+
+  def input_invalid(options)
+    puts "Invalid input, please try again. "
+    puts "Options are: #{options.join(", ")} " unless options == " "
   end
 
   def help

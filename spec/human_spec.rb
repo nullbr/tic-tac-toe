@@ -15,6 +15,14 @@ RSpec.describe Human do
     #   $stdin = STDIN
     # end
 
+    it "returns input without if no options are given" do
+      input = "Testing any input"
+      $stdin = StringIO.new(input)
+
+      expect(human_instance.get_input).to eq(input)
+      $stdin = STDIN
+    end
+
     it "receives valid number and returns it as integer" do
       $stdin = StringIO.new("3")
 
