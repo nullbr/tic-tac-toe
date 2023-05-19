@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
+require_relative "player"
+
 # Class definition for human player
-class Computer
-  attr_accessor :name, :symbol
+class Computer < Player
+  attr_accessor :name
 
   def initialize(symbol, level)
+    super(symbol)
     @name = "Mister Computer"
-    @symbol = symbol
     @level = level
   end
 

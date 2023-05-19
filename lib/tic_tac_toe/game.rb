@@ -70,13 +70,11 @@ class Game
   end
 
   # return formatted board
-  # rubocop:disable Layout/LineLength
   def display_the_board
     b = board
-    " #{b[0]} | #{b[1]} | #{b[2]}\n===+===+===\n #{b[3]} | #{b[4]} | #{b[5]}\n===+===+===\n #{b[6]} | #{b[7]} | #{b[8]}\n"
+    " #{b[0]} | #{b[1]} | #{b[2]}\n===+===+===\n #{b[3]} | #{b[4]} " \
+    "| #{b[5]}\n===+===+===\n #{b[6]} | #{b[7]} | #{b[8]}\n"
   end
-  # rubocop:enable Layout/LineLength
-
   # private
 
   # Iterate over each finish type pattern and return finish type if any

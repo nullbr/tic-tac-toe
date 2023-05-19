@@ -8,6 +8,7 @@ RSpec.describe Game do
     @player2 = "Giu"
     @game = Game.new(@player1, @player2)
   end
+
   describe ".input_to_board" do
     context "returns true when user enters " do
       it "valid spot 2" do
