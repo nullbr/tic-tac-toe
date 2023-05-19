@@ -139,37 +139,51 @@ RSpec.describe Game do
       end
     end
 
-    describe ".next_player" do
-      it "returns player 2" do
-        expect(@game.next_player).to be(@player2)
+    context "game gets tied: " do
+      it "returns true if game gets tied" do
+        [1, 0, 2, 4, 3, 7, 6, 5, 8].each { |n| @game.input_to_board(n) }
+        expect(@game.game_is_over?).to be_truthy
+        expect(@game.win_type).to eq "tie"
       end
     end
+  end
 
-    describe ".whose_turn" do
-      it "returns initial player" do
-        expect(@game.whose_turn).to eq @player1
-      end
+  describe ".next_player" do
+    it "returns player 2" do
+      expect(@game.next_player).to be(@player2)
+    end
+  end
 
-      it "returns player 2 after 3 moves" do
-        @game.input_to_board(1)
-        @game.input_to_board(2)
-        @game.input_to_board(7)
-        expect(@game.whose_turn).to eq @player2
-      end
+  describe ".whose_turn" do
+    it "returns initial player" do
+      expect(@game.whose_turn).to eq @player1
     end
 
-    describe ".winner" do
-      it "returns player 1 as winner" do
-        [3, 1, 4, 6, 5].each { |n| @game.input_to_board(n) }
-        @game.game_is_over?
-        expect(@game.winner).to eq @player1
-      end
+    it "returns player 2 after 3 moves" do
+      @game.input_to_board(1)
+      @game.input_to_board(2)
+      @game.input_to_board(7)
+      expect(@game.whose_turn).to eq @player2
+    end
+  end
 
-      it "returns player 2 as winner" do
-        [1, 2, 5, 4, 3, 6].each { |n| @game.input_to_board(n) }
-        @game.game_is_over?
-        expect(@game.winner).to eq @player2
-      end
+  describe ".winner" do
+    it "returns player 1 as winner" do
+      [3, 1, 4, 6, 5].each { |n| @game.input_to_board(n) }
+      @game.game_is_over?
+      expect(@game.winner).to eq @player1
+    end
+
+    it "returns player 2 as winner" do
+      [1, 2, 5, 4, 3, 6].each { |n| @game.input_to_board(n) }
+      @game.game_is_over?
+      expect(@game.winner).to eq @player2
+    end
+
+    it "returns nil if it game ties" do
+      [1, 0, 2, 4, 3, 7, 6, 5, 8].each { |n| @game.input_to_board(n) }
+      @game.game_is_over?
+      expect(@game.winner).to eq nil
     end
   end
 end

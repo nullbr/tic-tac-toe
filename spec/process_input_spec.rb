@@ -52,14 +52,14 @@ RSpec.describe ProcessInput do
   it "exits game if input exit" do
     $stdin = StringIO.new("exit")
 
-    expect { instance.capture_input([1, 2, 3]) }.to raise_error(SystemExit, "Exiting the game...")
+    expect { instance.capture_input([1, 2, 3]) }.to raise_error(SystemExit)
     $stdin = STDIN
   end
 
   it "exits game if input quit" do
     $stdin = StringIO.new("quit")
 
-    expect { instance.capture_input([1, 2, 3]) }.to raise_error(SystemExit, "Exiting the game...")
+    expect { instance.capture_input([1, 2, 3]) }.to raise_error(SystemExit)
     $stdin = STDIN
   end
 

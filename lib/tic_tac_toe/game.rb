@@ -39,6 +39,7 @@ class Game
 
     board[spot] = @current_player.symbol
     @available_spots.delete(spot)
+    @moves += 1
 
     # calls next player
     next_player
@@ -59,7 +60,7 @@ class Game
 
   # returns the winner
   def winner
-    return if @win_type.nil?
+    return if @win_type.nil? || @win_type == "tie"
 
     next_player
   end

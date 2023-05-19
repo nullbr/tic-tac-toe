@@ -16,7 +16,7 @@ class GamePlay
 
   def setup
     # Clear screen before starting game
-    system "clear"
+    clear_screen
     # initialize all variables
     @game_mode = nil
     @player1 = nil
@@ -36,7 +36,7 @@ class GamePlay
     setup
     # loop through until the game was won or tied
     until @game.game_is_over?
-      system "clear"
+      clear_screen
       puts @game.display_the_board
 
       capture_human_spot
@@ -95,21 +95,18 @@ class GamePlay
 
   # Get human choice of spot
   def capture_human_spot
-    puts "\nIt's #{@game.whose_turn.name}'s turn."
-    print "Enter [0-8]: "
+    spot = @game.whose_turn.move(@game.available_spots)
 
-    spot = capture_input(@game.available_spots) until spot
     @game.input_to_board(spot)
   end
 
   # Shows game winner if there is one and offers rematch
   def end_game
+    clear_screen
+    puts @game.display_the_board
     puts "\nGame over!"
-    if (winner = @game.winner)
-      puts "\nAnd the Winner is #{winner.name}!!!"
-    else
-      puts "\nNobody won :("
-    end
+
+    (winner = @game.winner) ? puts("\nAnd the Winner is #{winner.name}!!!") : puts("\nNobody won :(")
 
     print "\nWould you like to play again? [y/n] "
     choice = capture_input(%w[y n]) until choice
@@ -119,5 +116,10 @@ class GamePlay
   # Helper method to process user input cleanly
   def capture_input(options = " ")
     ProcessInput.new.capture_input(options)
+  end
+
+  # Helper method to clear the screen
+  def clear_screen
+    system "clear"
   end
 end
