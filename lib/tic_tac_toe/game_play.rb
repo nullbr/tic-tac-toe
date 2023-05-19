@@ -6,6 +6,7 @@ using RubyFiglet
 require_relative "game"
 require_relative "human"
 require_relative "computer"
+require_relative "process_input"
 
 # Game play file
 class GamePlay
@@ -15,46 +16,18 @@ class GamePlay
     @game_mode = nil
     @player1 = nil
     @player2 = nil
+    @available_symbols = %w[X O]
   end
 
   def start_game
     # Welcome
     welcome_message
-
     # Get game mode
     set_game_mode
-
+    # Create players
+    set_players
     # create game
-    @game = Game.new(player1, player2)
-    start_game
-  end
-
-  def welcome_message
-    puts "Tic Tac Toe".art
-    puts "\t\t\t\t\t   by Bruno Leite"
-    puts "\nLets Play!"
-  end
-
-  def set_game_mode
-    puts "Please choose a game mode (0, 1 or 3):\n" \
-    "\t0 -> Human vs Human\n\t1 -> Human vs Computer\n\t2 -> Computer vs Computer"
-
-    @game_mode = get_input([0, 1, 2]) until @game_mode
-
-    @game_mode
-  end
-
-  def create_players
-    if @game_mode.zero?
-      @player1 = Human.new("X")
-      @player2 = Human.new("O")
-    elsif @game_mode == 1
-      @player1 = Human.new("X")
-      @player2 = Computer.new("O")
-    else
-      @player1 = Computer.new("X")
-      @player2 = Computer.new("O")
-    end
+    @game = Game.new(@player1, @player2)
   end
 
   # def start_game
@@ -73,59 +46,49 @@ class GamePlay
   #   puts "Game over"
   # end
 
-  def capture_name(symbol)
-    puts "\nInsert player #{symbol} name: "
-    gets.chomp
+  def welcome_message
+    puts "Tic Tac Toe".art
+    puts "\t\t\t\t\t   by Bruno Leite"
+    puts "\nLets Play!"
   end
 
-  def get_input(options = " ")
-    input = gets.chomp.strip
+  def set_game_mode
+    puts "Please choose a game mode (0, 1 or 3):\n" \
+    "\t0 -> Human vs Human\n\t1 -> Human vs Computer\n\t2 -> Computer vs Computer"
 
-    return if display_help(input)
+    @game_mode = capture_input([0, 1, 2]) until @game_mode
 
-    exit_game(input) || validate_input(input, options) || input_invalid(options)
+    @game_mode
+  end
+
+  def set_players
+    if @game_mode.zero?
+      @player1 = human_player(1)
+      @player2 = human_player(2)
+    elsif @game_mode == 1
+      @player1 = human_player(1)
+      @player2 = Computer.new(@available_symbols.first)
+    else
+      @player1 = Computer.new(@available_symbols.first)
+      @player2 = Computer.new(@available_symbols.first)
+    end
   end
 
   private
 
-  def exit_game(input)
-    return unless %w[quit end exit].include?(input.downcase)
+  def human_player(num)
+    puts "Please enter a name for player #{num}:\n"
+    name = capture_input
 
-    abort("Exiting the game...")
+    puts "Would you like to play as #{@available_symbols.first} or #{@available_symbols.last}?\n"
+    symbol = capture_input(@available_symbols) until symbol
+    @available_symbols.delete(symbol)
+
+    Human.new(symbol, name)
   end
 
-  # Returns input if there are no options (no constrains) or
-  # Check if string only contains one integer and its in the options
-  def validate_input(input, options)
-    return input if options == " "
-
-    return unless options != " " && input !~ /\D/ && options.include?(input.to_i)
-
-    input.to_i
-  end
-
-  def input_invalid(options)
-    puts "\nInvalid input, please try again. "
-    puts "Options are: #{options.join(", ")} " unless options == " "
-  end
-
-  # prints insturctions
-  def display_help(input)
-    return unless input.downcase == "help"
-
-    puts help
-    true
-  end
-
-  def help
-    "Help instructions:\n\n"\
-    "1. There are 9 cells, to place a mark in one of the cells input a number from 0 to 8;\n\n"\
-    "2. Player X is always the frist one to play;\n"\
-    "3. Players alternate turns, placing their marks (X or O) in cells there are not yet taken;\n\n"\
-    "4. The objective is to get three of your marks in a row, either horizontally, vertically, or diagonally;\n\n"\
-    "5. Plan your moves strategically to prevent your opponent from getting three in a row while also trying to"\
-    " create your own winning combination;\n\n"\
-    "6. Keep taking turns until one of the players achieves three marks in a row or all the cells on the grid are"\
-    " filled;\n\n"
+  # Helper method to process user input cleanly
+  def capture_input(options = " ")
+    ProcessInput.new.capture_input(options)
   end
 end
