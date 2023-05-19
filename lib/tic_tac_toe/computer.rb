@@ -4,12 +4,12 @@ require_relative "player"
 
 # Class definition for human player
 class Computer < Player
-  attr_accessor :name
+  attr_accessor :level
 
-  def initialize(symbol, level)
-    super(symbol)
-    @name = "Mister Computer"
-    @level = level
+  def initialize(symbol)
+    name = "Mister Computer"
+    super(symbol, name)
+    @level = nil
   end
 
   def levels

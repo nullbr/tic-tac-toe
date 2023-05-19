@@ -3,8 +3,6 @@
 require "./lib/tic_tac_toe/game"
 require "./lib/tic_tac_toe/human"
 
-require "faker"
-
 RSpec.describe Game do
   before do
     @player1 = Human.new("X", Faker::Name.name)

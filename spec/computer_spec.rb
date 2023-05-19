@@ -5,8 +5,7 @@ require "./lib/tic_tac_toe/computer"
 RSpec.describe Computer do
   before do
     @symbol = %w[X O][rand(0..1)]
-    @level = rand(1..2)
-    @computer = Computer.new(@symbol, @level)
+    @computer = Computer.new(@symbol)
   end
 
   describe ".symbol" do

@@ -60,13 +60,6 @@ class Game
     return if @win_type.nil?
 
     next_player
-    # if @win_type == "Draw"
-    #   puts "Nobody won :("
-    # elsif @win_type.nil?
-    #   puts "You ended the game, nobody won"
-    # else
-    #   puts "And the Winner is #{@current_player}!!!"
-    # end
   end
 
   # return formatted board

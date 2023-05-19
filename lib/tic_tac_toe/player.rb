@@ -2,13 +2,10 @@
 
 # Class definition for human player
 class Player
-  attr_reader :symbol
+  attr_reader :symbol, :name
 
-  def initialize(symbol)
+  def initialize(symbol, name)
     @symbol = symbol
-  end
-
-  def symbols
-    %w[X O]
+    @name = name
   end
 end
