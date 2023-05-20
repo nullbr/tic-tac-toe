@@ -17,7 +17,8 @@ class ProcessInput
   def exit_game(input)
     return unless %w[quit end exit].include?(input.downcase)
 
-    abort("\nExiting the game...")
+    puts "\nGlad to have you, see you later!"
+    abort("Exiting the game...")
   end
 
   # Returns input based on options given

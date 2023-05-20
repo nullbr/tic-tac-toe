@@ -6,27 +6,35 @@ require_relative "player"
 class Computer < Player
   attr_accessor :level
 
-  def initialize(symbol)
-    name = "Mister Computer"
+  def initialize(symbol, level)
+    name = "Mister #{symbol} Computer"
     super(symbol, name)
-    @level = nil
-  end
-
-  def levels
-    { 1 => "Easy", 2 => "Hard" }
+    @level = level
   end
 
   # Get computer choice of spot
   def move(board)
+    puts "\nIt's #{name}'s turn."
+    spot = best_move(board)
+    print "Calculating move...  "
+    sleep 1
+    print spot
+    sleep 1
+    spot
+  end
+
+  def best_move(board)
     # 4 as first spot if available
     if board[4] == "4"
       4
     # choose spot to win or defend
-    elsif (spot = win_or_defend_spot(board)) # || get_rand_move(game)
+    elsif (spot = win_or_defend_spot(board))
       spot
     # choose one of the corners if available
-    elsif (spot = [0, 2, 6, 8].find { |s| available_spots(board).include?(s) })
+    elsif @level == 2 && (spot = [0, 2, 6, 8].find { |s| available_spots(board).include?(s) })
       spot
+    else
+      available_spots(board).sample
     end
   end
 
@@ -34,7 +42,8 @@ class Computer < Player
 
   def win_or_defend_spot(board)
     available_spots(board).find do |spot|
-      win_spot?(board, spot, symbol) || win_spot?(board, spot, opponent_symbol)
+      win_spot?(board, spot, symbol) ||
+        (@level == 2 && win_spot?(board, spot, opponent_symbol)) # Defend only if level is hard
     end
   end
 

@@ -19,13 +19,14 @@ class GamePlay
     clear_screen
     # initialize all variables
     @game_mode = nil
+    @computer_level = nil
     @player1 = nil
     @player2 = nil
     @available_symbols = %w[X O]
     # Welcome
     welcome_message
     # Get game mode
-    set_game_mode
+    set_game_settings
     # Create players
     set_players
     # create game
@@ -54,25 +55,29 @@ class GamePlay
     puts "\nFor instructions type 'help' at any moment.\nType 'quit' or 'exit' to leave the game\n"
   end
 
-  def set_game_mode
-    puts "\nChoose a game mode (0, 1 or 3):\n" \
-    "\t0 -> Human vs Human\n\t1 -> Human vs Computer\n\t2 -> Computer vs Computer"
+  def set_game_settings
+    puts "\nChoose a game mode (1, 2 or 3):\n" \
+      "\t1 -> Human vs Human\n\t2 -> Human vs Computer\n\t3 -> Computer vs Computer"
 
-    @game_mode = capture_input([0, 1, 2]) until @game_mode
+    @game_mode = capture_input([1, 2, 3]) until @game_mode
 
-    @game_mode
+    return unless [2, 3].include?(@game_mode)
+
+    puts "\nChoose a computer level (1, 2):\n" \
+      "\t1 -> Noobie\n\t2 -> Professional"
+    @computer_level = capture_input([1, 2]) until @computer_level
   end
 
   def set_players
-    if @game_mode.zero?
+    if @game_mode == 1
       @player1 = human_player(1)
       @player2 = human_player(2)
-    elsif @game_mode == 1
+    elsif @game_mode == 2
       @player1 = human_player(1)
-      @player2 = Computer.new(@available_symbols.first)
+      @player2 = Computer.new(@available_symbols.first, @computer_level)
     else
-      @player1 = Computer.new(@available_symbols.first)
-      @player2 = Computer.new(@available_symbols.first)
+      @player1 = Computer.new(@available_symbols.first, @computer_level)
+      @player2 = Computer.new(@available_symbols.last, @computer_level)
     end
   end
 

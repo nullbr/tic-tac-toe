@@ -15,6 +15,6 @@ class Player
   end
 
   def available_spots(board)
-    @available_spots ||= board.select { |spot| /^\d$/.match?(spot) }.map(&:to_i)
+    board.select { |spot| /^\d$/.match?(spot) }.map(&:to_i)
   end
 end
