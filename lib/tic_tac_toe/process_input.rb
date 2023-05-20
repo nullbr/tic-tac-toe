@@ -51,9 +51,9 @@ class ProcessInput
   def help
     "Help instructions:\n\n"\
     "1. There are 9 cells, to place a mark in one of the cells input a number from 0 to 8;\n\n"\
-    "2. Player X is always the frist one to play;\n"\
-    "3. Players alternate turns, placing their marks (X or O) in cells there are not yet taken;\n\n"\
-    "4. The objective is to get three of your marks in a row, either horizontally, vertically, or diagonally;\n\n"\
+    "2. Player X is always the first one to play;\n\n"\
+    "3. Players alternate turns, placing their marks (X or O) in cells that are not yet taken;\n\n"\
+    "4. The goal is to get three of your marks in a row, either horizontally, vertically, or diagonally;\n\n"\
     "5. Plan your moves strategically to prevent your opponent from getting three in a row while also trying to"\
     " create your own winning combination;\n\n"\
     "6. Keep taking turns until one of the players achieves three marks in a row or all the cells on the grid are"\
