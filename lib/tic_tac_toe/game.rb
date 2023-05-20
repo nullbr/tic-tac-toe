@@ -3,7 +3,7 @@
 # Main Game File
 class Game
   attr_accessor :board
-  attr_reader :win_type, :available_spots
+  attr_reader :win_type
 
   # Determine the possible types of game finish
   FINISH_TYPES = {
@@ -16,7 +16,6 @@ class Game
     @player1 = player1
     @player2 = player2
     @board = %w[0 1 2 3 4 5 6 7 8]
-    @available_spots = (0..8).to_a
     @current_player = player1.first? ? player1 : player2
     @win_type = nil
     @moves = 0
@@ -38,7 +37,7 @@ class Game
     return false unless spot_valid?(spot)
 
     board[spot] = @current_player.symbol
-    @available_spots.delete(spot)
+
     @moves += 1
 
     # calls next player
@@ -86,7 +85,7 @@ class Game
 
   # Iterate over each finish type pattern and return finish type if any
   def check_patterns
-    FINISH_TYPES.select { |_name, patterns| patterns.any? { |pattern| check_line(pattern) } }.keys.first
+    FINISH_TYPES.select { |_key, patterns| patterns.any? { |pattern| check_line(pattern) } }.keys.first
   end
 
   # check if line passed has only X or O to determine if game is over

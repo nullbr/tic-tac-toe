@@ -13,11 +13,11 @@ class Human < Player
   end
 
   # Get human choice of spot
-  def move(available_spots)
+  def move(board)
     puts "\nIt's #{name}'s turn."
     print "Enter [0-8]: "
 
-    spot = capture_input(available_spots) until spot
+    spot = capture_input(available_spots(board)) until spot
     spot
   end
 

@@ -13,4 +13,8 @@ class Player
   def first?
     @first_player
   end
+
+  def available_spots(board)
+    @available_spots ||= board.select { |spot| /^\d$/.match?(spot) }.map(&:to_i)
+  end
 end

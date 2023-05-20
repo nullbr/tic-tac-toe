@@ -39,7 +39,7 @@ class GamePlay
       clear_screen
       puts @game.display_the_board
 
-      capture_human_spot
+      capture_move
 
       # eval_board unless game_not_over?
     end
@@ -94,9 +94,9 @@ class GamePlay
     Human.new(symbol, name)
   end
 
-  # Get human choice of spot
-  def capture_human_spot
-    spot = @game.whose_turn.move(@game.available_spots)
+  # Get next move
+  def capture_move
+    spot = @game.whose_turn.move(@game.board)
 
     @game.input_to_board(spot)
   end
