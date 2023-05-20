@@ -1,5 +1,8 @@
 # Tic Tac Toe
 
+<img width="497" alt="Screenshot 2023-05-20 at 15 07 19" src="https://github.com/nullbr/tic-tac-toe/assets/94543524/1d6c125f-36f4-4205-9f2a-757d364a0510">
+
+
 ## Command Line Game
 
 Tic Tac Toe is a classic game implemented in Ruby and played through the command line interface. The game was developed using Test Driven Development techniques, with automated tests written in RSpec.
